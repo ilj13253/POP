@@ -1,0 +1,61 @@
+﻿@using UltraGreateDivanShop.Web.ViewModel
+
+@model ProductDetailsVM
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="@Model.Product.PreviewImg" class="d-block w-100" alt="@Model.Product.Title" />
+                    </div>
+
+                    @foreach (var productImg in Model.Product.ProductImgs)
+                    {
+                        <div class="carousel-item">
+                            <img src="@productImg.Img" class="d-block w-100" alt="@Model.Product.Title" />
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="list-group">
+                @foreach (var color in Model.Colors)
+                {
+                    <a asp-controller="Product"
+                       asp-action="ChangeProduct"
+                       asp-route-title="@color.Title"
+                       asp-route-colorTitleProduct="@color.ColorTitleProduct"
+                       style="background-color: @color.ColorHex"
+                       class="list-group-item list-group-item-action">
+                        <font color="white">@color.ColorTitleProduct</font>
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <h3 class="my-4">@Model.Product.Price ₽</h3>
+            <p class="mb-4">
+                Цвет: @Model.Product.ColorTitleProduct
+            </p>
+            <p class="mb-4">
+                @Model.Product.Description
+            </p>
+            <div class="d-flex gap-3 mb-4">
+                <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Product.Id" class="btn btn-success">Добавить в корзину</a>
+            </div>
+            <div>
+                <a asp-controller="Product" asp-action="AddWishList" asp-route-id="@Model.Product.Id" class="btn btn-primary" type="button">
+                    Добавить в список желаемого
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

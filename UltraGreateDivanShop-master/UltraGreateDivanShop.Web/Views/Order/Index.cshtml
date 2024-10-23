@@ -1,0 +1,24 @@
+﻿@using UltraGreateDivanShop.Domain;
+@model List<Order>
+
+<div class="container mt-5">
+    <div class="list-group">
+        @foreach (var order in Model)
+        {
+            <a asp-action="Details" asp-controller="Order" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <div>
+                        @foreach (var product in order.Products)
+                        {
+                            <p class="mb-1">@product.Title @product.ColorTitleProduct</p>
+                        }
+                    </div>
+                  
+                    <small>Дата заказа: @order.PurchaseDate.ToString("D")</small>
+                </div>
+
+                <small>@order.Price ₽</small>
+            </a>
+        }
+    </div>
+</div>

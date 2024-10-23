@@ -1,0 +1,106 @@
+﻿@using UltraGreateDivanShop.Web.ViewModel;
+@model ProductsListVM
+
+<div class="container mt-3">
+    <h1>@Model.TitleCategory</h1>
+
+    <form class="mt-4" asp-controller="Product" asp-action="Index">
+        <p>
+            <input type="hidden" asp-for="IdCategory" />
+            <label>Название: <input type="text" asp-for="SearchTitle" /></label>
+            <label>
+                Цвет:
+                <select asp-for="SearchColor" asp-items="Model.Colors">
+                    <option value="">Все</option>
+                </select>
+            </label>
+            <label>
+                Сортировка:
+                <select asp-for="SortProduct">
+                    <option value="">Все</option>
+                    <option value="AscPrice">По Возрастанию цены</option>
+                    <option value="DescPrice">По Убыванию цены</option>
+                </select>
+            </label>
+            <input type="submit" value="Поиск" />
+        </p>
+    </form>
+    <div class="row row-cols-4 mt-4 gap-4">
+        @if (Model is not null)
+        {
+            @foreach (var product in Model.Products)
+            {
+                <div class="card" style="width: 18rem;">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" style="text-decoration: inherit; color: inherit">
+                        <img src="@product.PreviewImg" class="card-img-top" alt="@product.Title">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Title</h5>
+                            <p class="card-text">@product.Price ₽</p>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary">Купить</a>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+
+    @{
+        const string Active = "active";
+        const string Disabled = "disabled";
+
+        string isDisabledPreviousPage = string.Empty;
+        string isDisabledNextPage = string.Empty;
+
+        if (!Model.Products.HasPreviousPage)
+        {
+            isDisabledPreviousPage = Disabled;
+        }
+
+        if (!Model.Products.HasNextPage)
+        {
+            isDisabledNextPage = Disabled;
+        }
+    }
+
+    <nav class="mt-5" aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @isDisabledPreviousPage">
+                <a asp-controller="Product"
+                   asp-action="Index"
+                   asp-route-idCategory="@Model.IdCategory"
+                   asp-route-searchTitle="@Model.SearchTitle"
+                   asp-route-searchColor="@Model.SearchColor"
+                   asp-route-sortProduct="@Model.SortProduct"
+                   asp-route-pageIndex="@(Model.Products.PageIndex - 1)"
+                   class="page-link"
+                   tabindex="-1"
+                   aria-disabled="@Model.Products.HasPreviousPage">Предыдущая</a>
+            </li>
+
+            @for (int pageIndex = 1; pageIndex <= Model.Products.TotalPages; pageIndex++)
+            {
+                <li class="page-item @(Model.Products.PageIndex == pageIndex ? Active : string.Empty)">
+                    <a asp-controller="Product"
+                       asp-action="Index"
+                       asp-route-idCategory="@Model.IdCategory"
+                       asp-route-searchTitle="@Model.SearchTitle"
+                       asp-route-searchColor="@Model.SearchColor"
+                       asp-route-sortProduct="@Model.SortProduct"
+                       asp-route-pageIndex="@pageIndex"
+                       class="page-link">@pageIndex</a>
+                </li>
+            }
+            <li class="page-item @isDisabledNextPage">
+                <a asp-controller="Product"
+                   asp-action="Index"
+                   asp-route-idCategory="@Model.IdCategory"
+                   asp-route-searchTitle="@Model.SearchTitle"
+                   asp-route-searchColor="@Model.SearchColor"
+                   asp-route-sortProduct="@Model.SortProduct"
+                   asp-route-pageIndex="@(Model.Products.PageIndex + 1)"
+                   class="page-link"
+                   aria-disabled="@Model.Products.HasPreviousPage">Следующая</a>
+            </li>
+        </ul>
+    </nav>
+</div>

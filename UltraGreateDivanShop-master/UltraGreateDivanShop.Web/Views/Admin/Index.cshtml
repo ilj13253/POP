@@ -1,0 +1,88 @@
+﻿@page
+@using UltraGreateDivanShop.Domain
+@model List<Product>
+@{
+}
+<div class="container">
+    <h1>Admin Panel - Product Management</h1>
+
+    <form method="get">
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <label for="color">Color</label>
+                <input type="text" name="color" class="form-control" value="@Request.Query["color"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="minPrice">Min Price</label>
+                <input type="number" name="minPrice" class="form-control" value="@Request.Query["minPrice"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="maxPrice">Max Price</label>
+                <input type="number" name="maxPrice" class="form-control" value="@Request.Query["maxPrice"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="minLength">Min Length (cm)</label>
+                <input type="number" name="minLength" class="form-control" value="@Request.Query["minLength"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="maxLength">Max Length (cm)</label>
+                <input type="number" name="maxLength" class="form-control" value="@Request.Query["maxLength"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="minWidth">Min Width (cm)</label>
+                <input type="number" name="minWidth" class="form-control" value="@Request.Query["minWidth"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="maxWidth">Max Width (cm)</label>
+                <input type="number" name="maxWidth" class="form-control" value="@Request.Query["maxWidth"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="minBedWidth">Min Bed Width (cm)</label>
+                <input type="number" name="minBedWidth" class="form-control" value="@Request.Query["minBedWidth"]" />
+            </div>
+            <div class="col-md-2">
+                <label for="maxBedWidth">Max Bed Width (cm)</label>
+                <input type="number" name="maxBedWidth" class="form-control" value="@Request.Query["maxBedWidth"]" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="sortOrder">Sort by</label>
+                <select name="sortOrder" class="form-select">
+                    <option value="price_asc">Price - Low to High</option>
+                    <option value="price_desc">Price - High to Low</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary mt-4">Apply Filters</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Color</th>
+                <th>Length (cm)</th>
+                <th>Width (cm)</th>
+                <th>Bed Width (cm)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Title</td>
+                    <td>@product.Price</td>
+                    <td>@product.ColorTitle</td>
+                    <td>@product.Length</td>
+                    <td>@product.Width</td>
+                    <td>@product.BedWidth</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
